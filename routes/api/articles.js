@@ -2,19 +2,9 @@ const router = require('express').Router(),
       mongoose = require('mongoose'),
       Article = mongoose.model('Article');
 
-
-// Get The Article
-router.get('/articles/:slug', (req, res) => {
-    Article.findOne({slug: req.params.slug}).then(function(article) {
-        if (!article) { return res.sendStatus(404); }
-
-        res.send(article);
-    });
-});
-
 // Get Articles
 // offset = Number >= 0, limit = Number[0;100], Author = String, Tags = tag-1, tag-2, tag-3
-router.get('/articles', (req, res) => {
+router.get('/', (req, res) => {
     const q = req.query;
     const query = {};
 
@@ -39,6 +29,15 @@ router.get('/articles', (req, res) => {
         .skip(offset)
         .sort({createdAt: 'desc'})
         .then((articles) => res.send(articles));
+});
+
+// Get The Article
+router.get('/:slug', (req, res) => {
+    Article.findOne({slug: req.params.slug}).then(function(article) {
+        if (!article) { return res.sendStatus(404); }
+
+        res.send(article);
+    });
 });
 
 
