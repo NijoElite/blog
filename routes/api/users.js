@@ -2,7 +2,15 @@ const router = require('express').Router(),
     mongoose = require('mongoose'),
     User = mongoose.model('User');
 
-// Get Users
+
+// Get User
+router.get('/:username', function(req, res) {
+    User.findOne({username: req.params.username}, 'username image bio email')
+        .then(user => res.send(user));
+});
+
+
+// Get Users List
 // username = string, limit = Number[0;100], offset = Number >= 0
 router.get('/', function(req, res) {
     const q = req.query;
