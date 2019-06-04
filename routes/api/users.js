@@ -11,15 +11,15 @@ router.get('/:username', function (req, res) {
 // Get Users List
 // username = string, limit = Number[0;100], offset = Number >= 0
 router.get('/', function (req, res) {
-    const q     = req.query;
+    const q = req.query;
     const query = {};
 
     let offset = Number.parseInt(q.offset) || +0;
-    offset     = Math.max(offset, 0);
+    offset = Math.max(offset, 0);
 
     let limit = Number.parseInt(q.limit) || +20;
-    limit     = Math.max(limit, 0);
-    limit     = Math.min(limit, 100);
+    limit = Math.max(limit, 0);
+    limit = Math.min(limit, 100);
 
 
     if (typeof q.username !== 'undefined') {

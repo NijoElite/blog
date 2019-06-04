@@ -1,5 +1,8 @@
-const router                                                                     = require('express').Router(), mongoose                             = require('mongoose'), User = mongoose.model('User'),
-      LocalStrategy                                                              = require('passport-local').Strategy, passport               = require('passport');
+const router        = require('express').Router(),
+      mongoose      = require('mongoose'),
+      User          = mongoose.model('User'),
+      LocalStrategy = require('passport-local').Strategy,
+      passport      = require('passport');
 
 passport.serializeUser(function (user, done) {
     done(null, user.username);

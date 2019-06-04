@@ -1,5 +1,8 @@
-const express                                                              = require('express'), mongoose = require('mongoose'), config = require('./config'),
-      passport                                                             = require('passport'), session                              = require('express-session');
+const express  = require('express'),
+      mongoose = require('mongoose'),
+      config   = require('./config'),
+      passport = require('passport'),
+      session  = require('express-session');
 
 
 const app = express();
@@ -28,7 +31,7 @@ app.use(require('./routes'));
 
 // 404
 app.use((req, res, next) => {
-    const err  = new Error('Not Found');
+    const err = new Error('Not Found');
     err.status = 404;
 
     next(err);

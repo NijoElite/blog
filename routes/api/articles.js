@@ -1,5 +1,8 @@
-const router                                                                        = require('express').Router(), mongoose                                = require('mongoose'), Article = mongoose.model('Article'),
-      User                                                                          = mongoose.model('User'), authRequired = require('../auth');
+const router       = require('express').Router(),
+      mongoose     = require('mongoose'),
+      Article      = mongoose.model('Article'),
+      User         = mongoose.model('User'),
+      authRequired = require('../auth');
 
 router.param('article', function (req, res, next, slug) {
     Article.findOne({slug: slug}).then(article => {
@@ -15,18 +18,18 @@ router.param('article', function (req, res, next, slug) {
 // Get Articles
 // offset = Number >= 0, limit = Number[0;100], Author = String, Tags = tag-1, tag-2, tag-3
 router.get('/feed', (req, res, next) => {
-    const q     = req.query;
+    const q = req.query;
     const query = {};
 
     let offset = Number.parseInt(q.offset) || +0;
-    offset     = Math.max(offset, 0);
+    offset = Math.max(offset, 0);
 
     let limit = Number.parseInt(q.limit) || +20;
-    limit     = Math.max(limit, 0);
-    limit     = Math.min(limit, 100);
+    limit = Math.max(limit, 0);
+    limit = Math.min(limit, 100);
 
     if (typeof q.tags !== 'undefined') {
-        const tags    = q.tags.split(',');
+        const tags = q.tags.split(',');
         query.tagList = {$all: tags}
     }
 
@@ -44,7 +47,7 @@ router.get('/feed', (req, res, next) => {
 
 // Create article
 router.post('/post', authRequired, function (req, res, next) {
-    const q             = req.body;
+    const q = req.body;
     const articleParams = {
         title: q.title, description: q.desc, body: q.body,
     };
