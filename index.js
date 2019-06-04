@@ -15,6 +15,8 @@ mongoose.set('debug', !isProduction);
 require('./models/Article');
 require('./models/User');
 
+app.use(express.urlencoded());
+
 /// routes
 app.use(require('./routes'));
 
