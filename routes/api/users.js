@@ -4,7 +4,7 @@ const router = require('express').Router(),
 
 
 // Get User
-router.get('/:username', function(req, res) {
+router.get('/:username', function (req, res) {
     User.findOne({username: req.params.username}, 'username image bio email')
         .then(user => res.send(user));
 });
@@ -12,7 +12,7 @@ router.get('/:username', function(req, res) {
 
 // Get Users List
 // username = string, limit = Number[0;100], offset = Number >= 0
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
     const q = req.query;
     const query = {};
 
@@ -25,14 +25,14 @@ router.get('/', function(req, res) {
 
 
     if (typeof q.username !== 'undefined') {
-        query.username = new RegExp("^"+ q.username);
+        query.username = new RegExp("^" + q.username);
     }
 
     User.find(query, 'username image bio')
         .limit(limit)
         .skip(offset)
         .sort({username: 'desc'})
-        .then( users => res.send(users));
+        .then(users => res.send(users));
 });
 
 module.exports = router;

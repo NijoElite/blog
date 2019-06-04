@@ -4,11 +4,11 @@ const router = require('express').Router(),
     LocalStrategy = require('passport-local').Strategy,
     passport = require('passport');
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user.username);
 });
 
-passport.deserializeUser(function(username, done) {
+passport.deserializeUser(function (username, done) {
     User.findOne({username: username})
         .then(user => done(null, user))
         .catch(err => done(err));
@@ -16,7 +16,7 @@ passport.deserializeUser(function(username, done) {
 
 
 passport.use(new LocalStrategy(
-    function(username, password, done) {
+    function (username, password, done) {
         User.findOne({username: username})
             .then(user => {
                 if (!user) {
@@ -34,8 +34,8 @@ passport.use(new LocalStrategy(
 
 
 router.post('/login',
-    passport.authenticate('local', { failureRedirect: '/login'}),
-    function(req, res) {
+    passport.authenticate('local', {failureRedirect: '/login'}),
+    function (req, res) {
         res.redirect('/users/' + req.user.username);
     }
 );

@@ -1,10 +1,10 @@
 const router = require('express').Router(),
-      mongoose = require('mongoose'),
-      Article = mongoose.model('Article'),
-      User = mongoose.model('User'),
-      authRequired = require('../auth');
+    mongoose = require('mongoose'),
+    Article = mongoose.model('Article'),
+    User = mongoose.model('User'),
+    authRequired = require('../auth');
 
-router.param('article', function(req, res, next, slug) {
+router.param('article', function (req, res, next, slug) {
     Article.findOne({slug: slug}).then(article => {
         if (!article) {
             return res.sendStatus(404);
@@ -30,7 +30,7 @@ router.get('/feed', (req, res, next) => {
 
     if (typeof q.tags !== 'undefined') {
         const tags = q.tags.split(',');
-        query.tagList = { $all: tags }
+        query.tagList = {$all: tags}
     }
 
     if (typeof q.author !== 'undefined') {
@@ -47,7 +47,7 @@ router.get('/feed', (req, res, next) => {
 
 // Create article
 router.post('/post', authRequired,
-    function(req, res, next) {
+    function (req, res, next) {
         const q = req.body;
         const articleParams = {
             title: q.title,
@@ -68,14 +68,14 @@ router.post('/post', authRequired,
 
         article.save()
             .then((article) => {
-                res.redirect(`/articles/${article.slug}` )
+                res.redirect(`/articles/${article.slug}`)
             }).catch(next)
     });
 
 // Delete article
 router.delete('/:article', authRequired,
     function (req, res, next) {
-        User.findById(req.user._id).then(function(user) {
+        User.findById(req.user._id).then(function (user) {
             if (!user) {
                 return res.sendStatus(401);
             }
@@ -86,8 +86,8 @@ router.delete('/:article', authRequired,
 
             req.article.remove()
                 .then(() => {
-                res.sendStatus(204)
-            }).catch(next);
+                    res.sendStatus(204)
+                }).catch(next);
         })
     });
 
@@ -99,6 +99,8 @@ router.get('/:article', (req, res) => {
 
 // Redirect
 
-router.get('/', (req, res) => {res.redirect('/articles/feed')});
+router.get('/', (req, res) => {
+    res.redirect('/articles/feed')
+});
 
 module.exports = router;

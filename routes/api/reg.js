@@ -1,10 +1,10 @@
 const router = require('express').Router(),
-      mongoose = require('mongoose'),
-      User = mongoose.model('User');
+    mongoose = require('mongoose'),
+    User = mongoose.model('User');
 
 
 // Register new user
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
 
     let isDataPresent =
         typeof req.body.email !== 'undefined' &&

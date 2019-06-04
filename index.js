@@ -1,8 +1,8 @@
 const express = require('express'),
-      mongoose = require('mongoose'),
-      config = require('./config'),
-      passport = require('passport'),
-      session = require('express-session');
+    mongoose = require('mongoose'),
+    config = require('./config'),
+    passport = require('passport'),
+    session = require('express-session');
 
 
 const app = express();
@@ -49,10 +49,12 @@ if (!isProduction) {
 
         res.status(err.status || 500);
 
-        res.json({'errors': {
+        res.json({
+            'errors': {
                 message: err.message,
                 error: err
-        }});
+            }
+        });
     });
 }
 
@@ -60,15 +62,17 @@ if (!isProduction) {
 // no stacktraces leaked to user
 app.use((err, req, res) => {
     res.status(err.status || 500);
-    res.json({'errors': {
+    res.json({
+        'errors': {
             message: err.message,
             error: {}
-    }});
+        }
+    });
 });
 
 
 // start server
-const server = app.listen(process.env.PORT || 3000, () =>{
+const server = app.listen(process.env.PORT || 3000, () => {
     console.log('Listening on port ' + server.address().port);
 });
 
