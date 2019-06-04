@@ -22,7 +22,8 @@ UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
 /// Password
 
 UserSchema.methods.validatePassword = function(pass) {
-    return this.hash === crypto.pbkdf2Sync(pass, this.salt, 10000, 512, 'sha512');
+    const hash = crypto.pbkdf2Sync(pass, this.salt, 10000, 512, 'sha512').toString();
+    return this.hash === hash;
 };
 
 

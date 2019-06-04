@@ -1,6 +1,9 @@
 const express = require('express'),
       mongoose = require('mongoose'),
-      config = require('./config');
+      config = require('./config'),
+      passport = require('passport'),
+      session = require('express-session');
+
 
 const app = express();
 
@@ -16,6 +19,14 @@ require('./models/Article');
 require('./models/User');
 
 app.use(express.urlencoded());
+app.use(session({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 /// routes
 app.use(require('./routes'));

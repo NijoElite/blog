@@ -29,6 +29,8 @@ router.post('/', function(req, res) {
         bio: bio,
     });
 
+    user.setPassword(req.body.password);
+
     user.save()
         .then((user) => res.send({status: 0, desc: `User ${user.username} created`}))
         .catch((err) => res.send({status: 1, desc: `${err}`}));
