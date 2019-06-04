@@ -1,8 +1,5 @@
-const express = require('express'),
-    mongoose = require('mongoose'),
-    config = require('./config'),
-    passport = require('passport'),
-    session = require('express-session');
+const express                                                              = require('express'), mongoose = require('mongoose'), config = require('./config'),
+      passport                                                             = require('passport'), session                              = require('express-session');
 
 
 const app = express();
@@ -20,9 +17,7 @@ require('./models/User');
 
 app.use(express.urlencoded());
 app.use(session({
-    secret: config.secret,
-    resave: false,
-    saveUninitialized: false
+    secret: config.secret, resave: false, saveUninitialized: false,
 }));
 
 app.use(passport.initialize());
@@ -33,7 +28,7 @@ app.use(require('./routes'));
 
 // 404
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
+    const err  = new Error('Not Found');
     err.status = 404;
 
     next(err);
@@ -51,9 +46,8 @@ if (!isProduction) {
 
         res.json({
             'errors': {
-                message: err.message,
-                error: err
-            }
+                message: err.message, error: err,
+            },
         });
     });
 }
@@ -64,9 +58,8 @@ app.use((err, req, res) => {
     res.status(err.status || 500);
     res.json({
         'errors': {
-            message: err.message,
-            error: {}
-        }
+            message: err.message, error: {},
+        },
     });
 });
 
