@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 router.use('/articles', require('./articles'));
 router.use('/tags', require('./tags'));
 router.use('/users', require('./users'));
+router.use('/auth', require('./auth'));
 router.use('/reg', require('./reg'));
-router.use('/login', require('./auth'));
 
 module.exports = router;
