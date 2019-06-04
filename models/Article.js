@@ -4,11 +4,11 @@ const mongoose = require('mongoose'),
 
 const ArticleSchema = new mongoose.Schema({
     slug: {type: String, lowercase: true, unique: true},
-    title: String,
-    description: String,
-    body: String,
+    title: {type: String, required: [true, 'cant be blank']},
+    description: {type: String, required: [true, 'cant be blank']},
+    body: {type: String, required: [true, 'cant be blank']},
     tagList: [{type: String}],
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    author: { type: mongoose.Schema.Types.ObjectId, required: [true, 'cant be blank'], ref: 'User' }
 }, { timestamps: true });
 
 ArticleSchema.plugin(uniqueValidator, { message: 'is already taken' });
