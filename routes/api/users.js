@@ -23,8 +23,9 @@ router.get('/', function(req, res) {
     limit = Math.max(limit, 0);
     limit = Math.min(limit, 100);
 
+
     if (typeof q.username !== 'undefined') {
-        query.username = q.username;
+        query.username = new RegExp("^"+ q.username);
     }
 
     User.find(query, 'username image bio')
