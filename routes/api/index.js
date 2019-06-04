@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 router.get('/', (req, res) => {
-    res.redirect('/articles');
+    res.redirect('/articles/feed');
 });
 
 router.use('/articles', require('./articles'));

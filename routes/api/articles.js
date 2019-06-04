@@ -1,11 +1,23 @@
 const router = require('express').Router(),
       mongoose = require('mongoose'),
       Article = mongoose.model('Article'),
+      User = mongoose.model('User'),
       authRequired = require('../auth');
+
+router.param('article', function(req, res, next, slug) {
+    Article.findOne({slug: slug}).then(article => {
+        if (!article) {
+            return res.sendStatus(404);
+        }
+
+        req.article = article;
+        return next();
+    }).catch(next)
+});
 
 // Get Articles
 // offset = Number >= 0, limit = Number[0;100], Author = String, Tags = tag-1, tag-2, tag-3
-router.get('/', (req, res) => {
+router.get('/feed', (req, res, next) => {
     const q = req.query;
     const query = {};
 
@@ -29,12 +41,13 @@ router.get('/', (req, res) => {
         .limit(limit)
         .skip(offset)
         .sort({createdAt: 'desc'})
-        .then((articles) => res.send(articles));
+        .then((articles) => res.send(articles))
+        .catch(next);
 });
 
 // Create article
 router.post('/post', authRequired,
-    function(req, res) {
+    function(req, res, next) {
         const q = req.body;
         const articleParams = {
             title: q.title,
@@ -56,20 +69,36 @@ router.post('/post', authRequired,
         article.save()
             .then((article) => {
                 res.redirect(`/articles/${article.slug}` )
-            })
-            .catch(err => res.send({err:err.message}))
-
+            }).catch(next)
     });
 
+// Delete article
+router.delete('/:article', authRequired,
+    function (req, res, next) {
+        User.findById(req.user._id).then(function(user) {
+            if (!user) {
+                return res.sendStatus(401);
+            }
 
-// Get The Article
-router.get('/:slug', (req, res) => {
-    Article.findOne({slug: req.params.slug}).then(function(article) {
-        if (!article) { return res.sendStatus(404); }
+            if (req.article.author._id.toString() !== user._id.toString()) {
+                return res.sendStatus(403);
+            }
 
-        res.send(article);
+            req.article.remove()
+                .then(() => {
+                res.sendStatus(204)
+            }).catch(next);
+        })
     });
+
+// Get article
+router.get('/:article', (req, res) => {
+    res.send(req.article);
 });
 
+
+// Redirect
+
+router.get('/', (req, res) => {res.redirect('/articles/feed')});
 
 module.exports = router;
