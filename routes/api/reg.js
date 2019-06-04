@@ -1,7 +1,7 @@
 const router   = require('express').Router(),
       mongoose = require('mongoose'),
       User     = mongoose.model('User'),
-      auth = require('../auth');
+      auth     = require('../auth');
 
 // Register new user
 router.post('/', auth.notAuthorized, function(req, res) {
