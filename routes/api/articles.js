@@ -73,14 +73,3 @@ router.get('/:slug', (req, res) => {
 
 
 module.exports = router;
-
-/*
-const ArticleSchema = new mongoose.Schema({
-    slug: {type: String, lowercase: true, unique: true},
-    title: String,
-    description: String,
-    body: String,
-    tagList: [{type: String}],
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-}, { timestamps: true });
-*/
