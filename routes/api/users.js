@@ -3,14 +3,15 @@ const router   = require('express').Router(),
       User     = mongoose.model('User');
 
 // Get User
-router.get('/:username', function(req, res) {
+router.get('/:username', function(req, res, next) {
   User.findOne({username: req.params.username}, 'username image bio email').
-       then(user => res.send(user));
+       then(user => res.send(user)).
+       catch(next);
 });
 
 // Get Users List
 // username = string, limit = Number[0;100], offset = Number >= 0
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
   const q = req.query;
   const query = {};
 
@@ -29,7 +30,8 @@ router.get('/', function(req, res) {
        limit(limit).
        skip(offset).
        sort({username: 'desc'}).
-       then(users => res.send(users));
+       then(users => res.send(users)).
+       catch(next);
 });
 
 module.exports = router;

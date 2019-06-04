@@ -4,15 +4,13 @@ const router   = require('express').Router(),
       auth     = require('../auth');
 
 // Register new user
-router.post('/', auth.notAuthorized, function(req, res) {
-  let isDataPresent = typeof req.body.email !== 'undefined' &&
-      typeof req.body.username !== 'undefined' && typeof req.body.password !==
-      'undefined';
+router.post('/', auth.notAuthorized, function(req, res, next) {
+  if (!req.body.email) {
+    res.status(422).json({errors: {email: 'can\'t be blank'}});
+  }
 
-  if (!isDataPresent) {
-    res.send({
-      status: 1, desc: 'Required parameters not provided',
-    });
+  if (!req.body.password) {
+    res.status(422).json({errors: {password: 'can\'t be blank'}});
   }
 
   let bio = '';
@@ -29,7 +27,7 @@ router.post('/', auth.notAuthorized, function(req, res) {
   user.save().
        then((user) => res.send(
            {status: 0, desc: `User ${user.username} created`})).
-       catch((err) => res.send({status: 1, desc: `${err}`}));
+       catch(next);
 });
 
 module.exports = router;
