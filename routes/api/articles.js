@@ -2,7 +2,7 @@ const router       = require('express').Router(),
       mongoose     = require('mongoose'),
       Article      = mongoose.model('Article'),
       User         = mongoose.model('User'),
-      authRequired = require('../auth');
+      auth = require('../auth');
 
 router.param('article', function (req, res, next, slug) {
     Article.findOne({slug: slug}).then(article => {
@@ -17,7 +17,7 @@ router.param('article', function (req, res, next, slug) {
 
 // Get Articles
 // offset = Number >= 0, limit = Number[0;100], Author = String, Tags = tag-1, tag-2, tag-3
-router.get('/feed', (req, res, next) => {
+router.get('/feed', auth.optional, (req, res, next) => {
     const q = req.query;
     const query = {};
 
@@ -46,7 +46,7 @@ router.get('/feed', (req, res, next) => {
 });
 
 // Create article
-router.post('/post', authRequired, function (req, res, next) {
+router.post('/post', auth.required, function (req, res, next) {
     const q = req.body;
     const articleParams = {
         title: q.title, description: q.desc, body: q.body,
@@ -70,7 +70,7 @@ router.post('/post', authRequired, function (req, res, next) {
 });
 
 // Delete article
-router.delete('/:article', authRequired, function (req, res, next) {
+router.delete('/:article', auth.required, function (req, res, next) {
     User.findById(req.user._id).then(function (user) {
         if (!user) {
             return res.sendStatus(401);
@@ -88,15 +88,13 @@ router.delete('/:article', authRequired, function (req, res, next) {
 });
 
 // Get article
-router.get('/:article', (req, res) => {
+router.get('/:article', auth.optional, (req, res) => {
     res.send(req.article);
 });
 
-
 // Redirect
-
-router.get('/', (req, res) => {
-    res.redirect('/articles/feed')
+router.get('/', auth.optional, (req, res) => {
+    res.redirect('/articles/feed');
 });
 
 module.exports = router;

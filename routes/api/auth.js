@@ -2,7 +2,8 @@ const router        = require('express').Router(),
       mongoose      = require('mongoose'),
       User          = mongoose.model('User'),
       LocalStrategy = require('passport-local').Strategy,
-      passport      = require('passport');
+      passport      = require('passport'),
+      auth          = require('../auth');
 
 passport.serializeUser(function (user, done) {
     done(null, user.username);
@@ -32,11 +33,11 @@ passport.use(new LocalStrategy(function (username, password, done) {
 }));
 
 
-router.post('/login', passport.authenticate('local', {failureRedirect: '/login'}), function (req, res) {
+router.post('/login', auth.notAuthorized, passport.authenticate('local', {failureRedirect: '/login'}), function (req, res) {
     res.redirect('/users/' + req.user.username);
 });
 
-router.post('/logout', function (req, res) {
+router.post('/logout', auth.required, function (req, res) {
     req.logout();
     res.sendStatus(200);
 });
