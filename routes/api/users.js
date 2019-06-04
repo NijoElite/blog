@@ -5,7 +5,7 @@ const router   = require('express').Router(),
 // Get User
 router.get('/:username', function(req, res, next) {
   User.findOne({username: req.params.username}, 'username image bio email').
-       then(user => res.send(user)).
+       then(user => res.render('users/userPage.pug', {user: user})).
        catch(next);
 });
 
@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
        limit(limit).
        skip(offset).
        sort({username: 'desc'}).
-       then(users => res.send(users)).
+       then(users => res.render('users/userList', {users: users})).
        catch(next);
 });
 

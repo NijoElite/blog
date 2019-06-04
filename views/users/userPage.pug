@@ -1,0 +1,19 @@
+html
+    head
+        title= 'My Site'
+    body
+        h1.user
+            span.user__name= user.username
+
+            -user.image = user.image || 'static/blank.jpg'
+            img(src='/' + user.image).user__image
+        div.bio
+            div.bio__text= user.bio
+
+        if articles
+            div.articles
+                ul
+                    each article in articles
+                        li.articles__item.article
+                            span.article__title= artcile.title
+                            span.article__date= moment(article.createdAt,'DD/MM/YYYY')

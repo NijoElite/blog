@@ -5,14 +5,15 @@ const router   = require('express').Router(),
       auth     = require('../auth');
 
 router.param('article', function(req, res, next, slug) {
-  Article.findOne({slug: slug}).then(article => {
-    if (!article) {
-      return res.sendStatus(404);
-    }
+  Article.findOne({slug: slug}).populate('author').
+          then(article => {
+            if (!article) {
+              return res.sendStatus(404);
+            }
 
-    req.article = article;
-    return next();
-  }).catch(next);
+            req.article = article;
+            return next();
+          }).catch(next);
 });
 
 // Get Articles
@@ -41,7 +42,8 @@ router.get('/feed', auth.optional, (req, res, next) => {
           limit(limit).
           skip(offset).
           sort({createdAt: 'desc'}).
-          then((articles) => res.send(articles)).
+          populate('author').
+          then((articles) => res.render('articles/feed.pug', {articles: articles})).
           catch(next);
 });
 
@@ -87,7 +89,7 @@ router.delete('/:article', auth.required, function(req, res, next) {
 
 // Get article
 router.get('/:article', auth.optional, (req, res) => {
-  res.send(req.article);
+  res.render('articles/article.pug', {article: req.article});
 });
 
 // Redirect
