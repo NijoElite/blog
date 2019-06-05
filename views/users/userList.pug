@@ -1,9 +1,0 @@
-html
-    head
-        title= 'My Site'
-    body
-        each user in users
-            div.user
-                a(href='/users/' + user.username).user__name= user.username
-                -user.image = user.image || 'static/blank.jpg'
-                img(src='/' + user.image).user__image

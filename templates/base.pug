@@ -1,0 +1,19 @@
+doctype html
+html
+    head
+        meta(charset = 'utf-8')
+        meta(name='viewport', content="initial-scale=1.0, width=device-width")
+        link(rel='stylesheet', type='text/css', href='main.css')
+        title
+            block title
+    body.page
+        div.navbar.page__navbar
+            - const navbarElements = [{caption: 'Users', link:'/users/'}, {caption: 'Articles', link:'/articles/'}]
+            ul.navbar__list
+                each el in navbarElements
+                    li.navbar__item
+                        a(href=el.link)= el.caption
+        div.main.page__main
+            block main
+        div.footer.page__footer
+            | It is footer

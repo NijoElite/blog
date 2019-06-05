@@ -43,7 +43,8 @@ router.get('/feed', auth.optional, (req, res, next) => {
           skip(offset).
           sort({createdAt: 'desc'}).
           populate('author').
-          then((articles) => res.render('articles/feed.pug', {articles: articles})).
+          then((articles) => res.render('articles/feed.pug',
+              {articles: articles})).
           catch(next);
 });
 

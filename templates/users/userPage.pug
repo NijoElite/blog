@@ -1,0 +1,20 @@
+extends ../base
+
+block title
+    | 'Blog'
+
+block main
+    h1.user
+        span.user__name= user.username
+        img(src='/' + user.image).user__image
+    div.bio
+        div.bio__text= user.bio
+
+    if articles
+        div.articles
+            ul
+                each article in articles
+                    li.articles__item.article
+                        span.article__title= artcile.title
+                        span.article__date= moment(article.createdAt, 'DD/MM/YYYY')
+

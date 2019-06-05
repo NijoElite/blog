@@ -1,0 +1,10 @@
+extends ../base
+
+block title
+    | 'Blog'
+
+block main
+    each user in users
+        div.user
+            a(href='/users/' + user.username).user__name= user.username
+            img(src='/' + user.image).user__image

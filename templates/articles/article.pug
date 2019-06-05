@@ -1,0 +1,15 @@
+extends ../base
+
+block title
+    =article.title
+
+block main
+    h1.title
+        span.title__text= article.title
+        span.title__date= moment(article.createdAt).format('DD.MM.YYYY')
+    div.author
+        a(href='/users/' + article.author.username).author__username= article.author.username
+        img.author__img(src='/' + article.author.image)
+    div.description= article.description
+    div.body= article.body
+

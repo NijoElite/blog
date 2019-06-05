@@ -2,7 +2,9 @@ const express  = require('express'),
       mongoose = require('mongoose'),
       config   = require('./config'),
       passport = require('passport'),
-      session  = require('express-session');
+      session  = require('express-session'),
+      moment   = require('moment'),
+      path     = require('path');
 
 const app = express();
 
@@ -15,6 +17,14 @@ mongoose.set('debug', !isProduction);
 // models
 require('./models/Article');
 require('./models/User');
+
+/// Express config
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/templates'));
+
+app.locals.moment = moment;
+
+app.use(express.static('static'));
 
 app.use(express.urlencoded());
 app.use(session({

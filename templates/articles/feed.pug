@@ -1,0 +1,14 @@
+extends ../base
+
+block title
+    | 'Blog'
+
+block main
+    each article in articles
+        div.article
+            h4.title
+                a(href='/articles/' + article.slug).title__text= article.title
+                a(href='/users/' + article.author.username).title__author= article.author.username
+                span.title__date= moment(article.createdAt).format('DD.MM.YYYY')
+            div.desc
+                div.desc__text= article.description
