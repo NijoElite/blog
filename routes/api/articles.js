@@ -8,7 +8,9 @@ router.param('article', function(req, res, next, slug) {
   Article.findOne({slug: slug}).populate('author').
           then(article => {
             if (!article) {
-              return res.sendStatus(404);
+              const err = new Error('Article Not Found');
+              err.status = 404;
+              return next(err);
             }
 
             req.article = article;
@@ -74,12 +76,17 @@ router.post('/post', auth.required, function(req, res, next) {
 // Delete article
 router.delete('/:article', auth.required, function(req, res, next) {
   User.findById(req.user._id).then(function(user) {
+    let err;
     if (!user) {
-      return res.sendStatus(401);
+      err = new Error('Your User Not Found');
+      err.status(401);
+      return next(err);
     }
 
     if (req.article.author._id.toString() !== user._id.toString()) {
-      return res.sendStatus(403);
+      err = new Error('You don\'t have permission to access');
+      err.status(403);
+      return next(err);
     }
 
     req.article.remove().then(() => {

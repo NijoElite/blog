@@ -5,7 +5,14 @@ const router   = require('express').Router(),
 // Get User
 router.get('/:username', function(req, res, next) {
   User.findOne({username: req.params.username}, 'username image bio email').
-       then(user => res.render('users/userPage.pug', {user: user})).
+       then(user => {
+         if (!user) {
+           const err = new Error('User Not Found');
+           err.status = 404;
+           return next(err);
+         }
+         res.render('users/userPage.pug', {user: user});
+       }).
        catch(next);
 });
 

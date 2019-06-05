@@ -38,40 +38,17 @@ app.use(passport.session());
 app.use(require('./routes'));
 
 // 404
-app.use((req, res, next) => {
+app.use(function(req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
-
+  err.message = 'Page doesn\'t exist';
   next(err);
 });
 
-/// error handlers
+app.use(function(err, req, res) {
+  res.status = err.status || 500;
 
-// development error handler
-// will print stacktrace
-if (!isProduction) {
-  app.use((err, req, res) => {
-    console.log(err.stack);
-
-    res.status(err.status || 500);
-
-    res.json({
-      'errors': {
-        message: err.message, error: err,
-      },
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use((err, req, res) => {
-  res.status(err.status || 500);
-  res.json({
-    'errors': {
-      message: err.message, error: {},
-    },
-  });
+  res.render('error', {status: err.status, message: err.message});
 });
 
 // start server

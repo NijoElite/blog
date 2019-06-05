@@ -20,8 +20,7 @@ router.use(function(err, req, res, next) {
       }, {}),
     });
   }
-
-  return next(err);
+  next(err);
 });
 
 module.exports = router;
