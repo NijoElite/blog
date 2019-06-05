@@ -21,7 +21,10 @@ const UserSchema = new mongoose.Schema({
     index    : true,
   },
 
-  bio: String, image: String, hash: String, salt: String,
+  bio: String, image: {
+    type: String,
+    default: 'img/blank.png'
+  }, hash: String, salt: String,
 }, {timestamps: true});
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
